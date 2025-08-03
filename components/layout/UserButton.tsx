@@ -10,7 +10,7 @@ import {
 } from "../ui/dropdown-menu";
 import { FaRegBookmark } from "react-icons/fa";
 
-const UserInput = () => {
+const UserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -56,4 +56,4 @@ const UserInput = () => {
   );
 };
 
-export default UserInput;
+export default UserButton;
