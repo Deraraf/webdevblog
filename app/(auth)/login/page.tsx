@@ -1,7 +1,13 @@
+import LoginForm from "@/components/auth/LoginForm";
+import Container from "@/components/layout/Container";
 import React from "react";
 
 const Login = () => {
-  return <div className="flex flex-col gap-4 dark:text-white">Login page</div>;
+  return (
+    <Container>
+      <LoginForm />
+    </Container>
+  );
 };
 
 export default Login;

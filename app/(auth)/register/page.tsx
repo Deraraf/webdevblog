@@ -1,8 +1,12 @@
+import RegisterForm from "@/components/auth/RegisterForm";
+import Container from "@/components/layout/Container";
 import React from "react";
 
-const Register = () => {
+const Register = async () => {
   return (
-    <div className="flex flex-col gap-4 dark:text-white">Register page</div>
+    <Container>
+      <RegisterForm />
+    </Container>
   );
 };
 

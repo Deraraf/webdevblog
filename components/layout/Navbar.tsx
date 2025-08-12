@@ -1,13 +1,18 @@
-import { MdNoteAlt } from "react-icons/md";
+"use client";
 
+import { MdNoteAlt } from "react-icons/md";
 import Container from "./Container";
 import ThemeToggle from "./ThemeToggle";
 import SearchInput from "./SearchInput";
 import Notifications from "./Notifications";
 import UserButton from "./UserButton";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const session = useSession();
+  // console.log(session);
+  const isLoggedIn = session.status === "authenticated";
   return (
     <nav className="sticky top-0 border-b z-50 dark:bg-gray-950 dark:text-white">
       <Container>
@@ -19,12 +24,17 @@ const Navbar = () => {
           <SearchInput />
           <div className="flex gap-5 sm:gap-8 items-center">
             <ThemeToggle />
-            <Notifications />
-            <UserButton />
-            <>
-              <Link href="/login">Login</Link>
-              <Link href="/register"> Register</Link>
-            </>
+            {isLoggedIn ? (
+              <>
+                <Notifications />
+                <UserButton />
+              </>
+            ) : (
+              <>
+                <Link href="/login">Login</Link>
+                <Link href="/register"> Register</Link>
+              </>
+            )}
           </div>
         </div>
       </Container>

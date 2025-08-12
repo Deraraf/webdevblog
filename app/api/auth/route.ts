@@ -1,0 +1,9 @@
+export const publicRoutes = [
+  "/",
+  "/email-verification",
+  "/password-email-form",
+  "/password-reset-form",
+];
+export const authRoutes = ["/login", "/register"];
+export const apiAuthPrifix = "/api/auth";
+export const LOGIN_REDIRECT = "/user/1";
