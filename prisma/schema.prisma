@@ -16,7 +16,20 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  bio           String?
   accounts      Account[]
+  followers     Follow[] @relation("UserAsFollowed") //user who is being followed
+  followings    Follow[] @relation("UserAsFollower") //user who is following
+  tags          String[]
+  blogs         Blog[]
+  claps         Clap[]
+  receivedNotifications Notification[] @relation("NotificationReceived")
+  sentNotifications Notification[] @relation("NotificationSent")
+
+  bookmarks     Bookmark[]
+  comments      Comment[]
+  commentClaps  CommentClap[]
+  repliedToComment Comment[] @relation("ReplyToUser")
   role          UserRole    @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,4 +76,115 @@ model PasswordResetToken {
 enum UserRole {
   USER
   ADMIN
+}
+
+
+model Blog {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  content     String
+  coverImage  String?
+  isPublished Boolean  @default(false)
+  tags        String[]
+  bookmarks   Bookmark[]
+  comments    Comment[]
+  claps       Clap[]
+  notifications Notification[]
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model Clap{
+  id           String @id @default(uuid())  
+  userId       String
+  blogId       String
+  createdAt    DateTime @default(now())
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blog         Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogId])
+}
+model Bookmark{
+  id           String @id @default(cuid())
+  userId       String
+  blogId       String
+  createdAt    DateTime @default(now())
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blog         Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogId])
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  userId      String
+  blogId      String
+  parentId    String?
+  replyToUserId String?
+  content     String
+  createdAt   DateTime @default(now())
+  claps       CommentClap[]
+  notifications Notification[] 
+
+  user        User     @relation( fields: [userId], references: [id], onDelete: Cascade)
+  blog        Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  parent      Comment? @relation("OneLevelThread", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("OneLevelThread")
+  replyToUser User?    @relation("ReplyToUser", fields: [replyToUserId], references: [id], onDelete: Cascade)
+}
+
+model CommentClap{
+  id           String @id @default(cuid())
+  userId       String
+  commentId    String
+  createdAt    DateTime @default(now())
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment      Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, commentId])
+}
+ 
+ model Follow{
+  id            String @id @default(cuid())
+  followingId   String //user who is following
+  followerId    String //user who is being followed
+  createdAt     DateTime @default(now())
+  follower      User @relation("UserAsFollower", fields: [followerId], references: [id], onDelete: Cascade) //user who is being followed
+  following     User @relation("UserAsFollowed", fields: [followingId], references: [id], onDelete: Cascade)//user who is following
+ 
+  @@unique([followerId, followingId])
+}
+
+model Notification{
+  id          String   @id @default(cuid())
+ recipientId String
+ senderId    String
+  type        NotificationType
+ blogId      String?
+ commentId   String?
+ entityType  EntityType?
+ content     String?
+ isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  recipient   User @relation("NotificationReceived", fields: [recipientId], references: [id], onDelete: Cascade)
+  sender      User @relation("NotificationSent", fields: [senderId], references: [id], onDelete: Cascade)
+  blog        Blog? @relation( fields: [blogId], references: [id], onDelete: Cascade,map: "notifications_blog_entityId_fkey")
+  comment     Comment? @relation( fields: [commentId], references: [id], onDelete: Cascade, map: "notifications_comment_entityId_fkey")
+} 
+
+enum EntityType {
+  USER
+  BLOG
+  COMMENT
+  SYSTEM
+}
+
+enum NotificationType {
+ NEW_COMMENT
+ COMMENT_REPLY
+ NEW_CLAP
+ FOLLOW
+ SYSTEM_ALERT
 }

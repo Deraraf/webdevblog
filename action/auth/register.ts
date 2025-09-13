@@ -37,17 +37,17 @@ export const signUp = async (values: RegisterSchemaType) => {
         password: hashedPassword,
       },
     });
-    const emailVerificationToken = await generateEmailVerificationToken(email);
+    // const emailVerificationToken = await generateEmailVerificationToken(email);
 
-    const { error } = await sendVerificationToken(
-      emailVerificationToken.email,
-      emailVerificationToken.token
-    );
-    if (error) {
-      return { error: "something went wrong while sending verification email" };
-    }
+    // const { error } = await sendVerificationToken(
+    //   emailVerificationToken.email,
+    //   emailVerificationToken.token
+    // );
+    // if (error) {
+    //   return { error: "something went wrong while sending verification email" };
+    // }
 
-    return { success: "Verification email sent successfully" };
+    // return { success: "Verification email sent successfully" };
   } catch (err) {
     console.error("Error creating user:", err);
     return { error: "Server error while creating user" };

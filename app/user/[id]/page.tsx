@@ -1,8 +1,7 @@
-import React from "react";
-
+import { redirect } from "next/navigation";
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  return <div>user with id: {id}</div>;
+  redirect(`/user/${id}/1`);
 };
 
 export default page;

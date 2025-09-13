@@ -1,7 +1,7 @@
-import React from "react";
+import { redirect } from "next/navigation";
 
 const Home = () => {
-  return <div>Dashboard page </div>;
+  return redirect("/blog/feed/1");
 };
 
 export default Home;

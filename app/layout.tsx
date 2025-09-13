@@ -7,6 +7,7 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import { SocketContextProvider } from "@/context/SocketContext";
 export const metadata: Metadata = {
   title: "Webdev.blog",
   description: "A blog about web development",
@@ -22,38 +23,35 @@ export default async function RootLayout({
   return (
     <EdgeStoreProvider>
       <SessionProvider session={session}>
-        <html lang="en" suppressHydrationWarning>
-          <body
-            className={cn(
-              "antialiased flex flex-col min-h-screen text-black dark:text-white dark:bg-gray-950 bg-white"
-            )}
-          >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
+        <SocketContextProvider>
+          <html lang="en" suppressHydrationWarning>
+            <body
+              className={cn(
+                "antialiased flex flex-col min-h-screen text-black dark:text-white dark:bg-gray-950 bg-white"
+              )}
             >
-              <Navbar />
-              <main className="flex-grow">{children}</main>
-              <Toaster
-                position="top-right"
-                containerStyle={{
-                  top: 200,
-                  right: 200,
-                }}
-                toastOptions={{
-                  style: {
-                    padding: 0,
-                    background: "transparent",
-                    boxShadow: "none",
-                  },
-                }}
-              />
-              <footer>...</footer>
-            </ThemeProvider>
-          </body>
-        </html>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Navbar />
+                <main className="flex-grow">{children}</main>
+                <Toaster
+                  position="bottom-center"
+                  toastOptions={{
+                    style: {
+                      background: "rgb(51, 65, 85)",
+                      color: "#fff",
+                    },
+                  }}
+                />
+                <footer>...</footer>
+              </ThemeProvider>
+            </body>
+          </html>
+        </SocketContextProvider>
       </SessionProvider>
     </EdgeStoreProvider>
   );

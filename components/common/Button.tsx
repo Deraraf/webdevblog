@@ -11,6 +11,7 @@ interface ButtonProps {
   className?: string;
   type?: "submit" | "button" | "reset" | undefined;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isFollowing?: boolean;
 }
 
 const Button = ({
@@ -22,6 +23,7 @@ const Button = ({
   className,
   type,
   onClick,
+  isFollowing,
 }: ButtonProps) => {
   return (
     <button
@@ -32,6 +34,7 @@ const Button = ({
         outlined &&
           "bg-transparent text-slate-700 dark:text-slate-300 dark:bg-transparent",
         small && "text-sm py-1 px-2 border-[1px]",
+        isFollowing && "bg-rose-500 text-white",
         className && className
       )}
       onClick={onClick}

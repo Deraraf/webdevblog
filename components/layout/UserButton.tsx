@@ -12,10 +12,13 @@ import {
 } from "../ui/dropdown-menu";
 import { FaRegBookmark } from "react-icons/fa";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const UserButton = () => {
   const session = useSession();
+  const router = useRouter();
   const imgUrl = session?.data?.user.image || "";
+  const isAdmin = session?.data?.user.role === "ADMIN";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -28,29 +31,45 @@ const UserButton = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
-          <button className="flex items-center gap-2">
+          <button
+            onClick={() => router.push(`/user/${session?.data?.user.id}/1`)}
+            className="flex items-center gap-2"
+          >
             <User size={18} /> Profile
           </button>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <button className="flex items-center gap-2">
-            <Pencil size={18} /> Preate Post
+          <button
+            onClick={() => router.push("/blog/create")}
+            className="flex items-center gap-2"
+          >
+            <Pencil size={18} /> Create Post
           </button>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <button className="flex items-center gap-2">
+          <button
+            onClick={() => router.push("/blog/bookmarks/1")}
+            className="flex items-center gap-2"
+          >
             <FaRegBookmark size={16} /> Bookmark
           </button>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <button className="flex items-center gap-2">
-            <Shield size={18} /> Admin
-          </button>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        {isAdmin && (
+          <>
+            <DropdownMenuItem>
+              <button
+                onClick={() => router.push("/admin")}
+                className="flex items-center gap-2"
+              >
+                <Shield size={18} /> Admin
+              </button>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem>
           <button onClick={() => signOut()} className="flex items-center gap-2">
             <LogOut size={18} /> SignOut
