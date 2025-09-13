@@ -23,21 +23,21 @@ export async function login(values: LoginSchemaType) {
     return { error: "Invalid email or password" };
   }
 
-  // if (!user.emailVerified) {
-  //   const emailVerificationToken = await generateEmailVerificationToken(
-  //     user.email
-  //   );
+  if (!user.emailVerified) {
+    const emailVerificationToken = await generateEmailVerificationToken(
+      user.email
+    );
 
-  //   const { error } = await sendVerificationToken(
-  //     emailVerificationToken.email,
-  //     emailVerificationToken.token
-  //   );
-  //   if (error) {
-  //     return { error: "something went wrong while sending verification email" };
-  //   }
+    const { error } = await sendVerificationToken(
+      emailVerificationToken.email,
+      emailVerificationToken.token
+    );
+    if (error) {
+      return { error: "something went wrong while sending verification email" };
+    }
 
-  //   return { success: "Verification email sent successfully" };
-  // }
+    return { success: "Verification email sent successfully" };
+  }
 
   try {
     const result = await signIn("credentials", {
