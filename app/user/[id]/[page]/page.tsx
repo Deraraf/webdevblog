@@ -11,8 +11,6 @@ const Profile = async ({
   const { id, page } = await params;
   const session = await auth();
   const currentUserId = session?.user?.id;
-  const name = session?.user.name;
-  console.log("currentUserId", currentUserId, name);
 
   const user = await db.user.findUnique({
     where: {

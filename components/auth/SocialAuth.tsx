@@ -5,8 +5,7 @@ import { signIn } from "next-auth/react";
 
 const SocialAuth = () => {
   const handleOnClick = (provider: "github" | "google") => {
-    signIn(provider, { callbackUrl: "/user/1" });
-    console.log(provider);
+    signIn(provider, { callbackUrl: `${window.location.origin}/blog/feed/1` });
   };
 
   return (

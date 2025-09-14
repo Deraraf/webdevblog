@@ -17,9 +17,9 @@ export default async function createBlog(values: BlogFormType) {
   });
   if (!user) return { error: "User not found" };
 
-  // if (isPublished && !user.emailVerified) {
-  //   return { error: "not authorized verify your email first" };
-  // }
+  if (isPublished && !user.emailVerified) {
+    return { error: "not authorized verify your email first" };
+  }
 
   await db.blog.create({
     data: {
