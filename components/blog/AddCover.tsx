@@ -41,7 +41,7 @@ const AddCover = ({ setUploadedCover, replaceUrl }: AddCoverProps) => {
     return () => {
       isMounted = false;
     };
-  }, [file]);
+  }, [file, edgestore.publicFiles, replaceUrl, setUploadedCover]);
 
   return (
     <div>

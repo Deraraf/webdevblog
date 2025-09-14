@@ -9,7 +9,7 @@ import AddCommentsForm from "./AddCommentsForm";
 
 const ReplyCard = ({ reply }: { reply: CommentsWithUser }) => {
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [showReply, setShowReply] = useState<boolean>(false);
+  const [showReply] = useState<boolean>(false);
   const session = useSession();
   const userId = session?.data?.user.id;
   return (

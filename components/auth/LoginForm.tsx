@@ -11,7 +11,7 @@ import { login } from "@/action/auth/login";
 import { useState, useTransition, useEffect } from "react";
 import Alert from "../common/Alert";
 import { useRouter, useSearchParams } from "next/navigation";
-import { LOGIN_REDIRECT } from "@/app/api/auth/route";
+import { LOGIN_REDIRECT } from "@/lib/routes";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import toast from "react-hot-toast";
